@@ -39,7 +39,7 @@ def main():
         nms_th=nms_th,
         nms_score_th=nms_score_th,
         with_p6=with_p6,
-        # providers=['CPUExecutionProvider'],
+        providers=['CPUExecutionProvider'],
     )
 
     # label 설정 ###########################################################
