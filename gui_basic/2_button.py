@@ -1,7 +1,7 @@
 from tkinter import *       # tkinter는 자동으로 모듈에 포함되어 있기 때문에 따로 설치하지 않아도 됨.
 
 root = Tk()
-root.title("sex") # 프로그램 타이틀
+root.title("GUI Practice") # 프로그램 타이틀
 
 btn1 = Button(root, text="버튼1") # 어디에 넣을지, 버튼 위에 적힐 글씨
 btn1.pack() # pack을 호출함으로써 root에 포함됨
