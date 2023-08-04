@@ -1,8 +1,54 @@
 from tkinter import *
+import tkinter.messagebox  as msgbox
 import tkinter.ttk as ttk
+from tkinter import filedialog # 파일 탐색기
 
 root = Tk()
 root.title("GUI")
+
+# 파일 추가
+def add_file():
+    # 파일 탐색기가 떠야함
+    files = filedialog.askopenfilenames( # 선택된 파일의 절대경로를 리스트로 반환함
+        title="이미지 파일을 선택하세요",
+        filetypes=(("PNG", "*.png"), ("모든 파일", "*.*")),
+        initialdir="/Users/pulledsub/Pictures/"
+    )
+    for file in files: # 사용자가 선택한 파일
+        list_file.insert(END, file)
+
+# 선택된 파일 삭제
+def del_file():
+    # print(list_file.curselection()) 선택된 파일
+
+    for idx in reversed(list_file.curselection()): # 뒤집는 이유: 끝 인덱스부터 지워야 지우고 난 후 다음에 지울 인덱스에 영향이 없음
+        list_file.delete(idx)
+
+# 저장 경로 (폴더)
+def browse_dest_path():
+    folder_selected = filedialog.askdirectory()
+    if folder_selected == '': # 사용자가 취소를 눌렀을때
+        return
+    txt_dest_path.delete(0, END)
+    txt_dest_path.insert(0, folder_selected)
+
+# 시작 버튼
+def start():
+    # 각 옵션들 값 확인
+    print("가로 넓이 : ", combo_width.get())
+    print("간격 : ", combo_space.get())
+    print("포맷 : ", combo_format.get())
+
+    # 파일 목록 확인
+    if list_file.size() == 0:
+        msgbox.showwarning("경고", "이미지 파일을 추가하세요")
+        return
+
+    # 저장 경로 확인
+    if len(txt_dest_path.get()) == 0:
+        msgbox.showwarning("경고", "저장 경로를 선택하세요")
+        return
+
 
 # 레이아웃을 구분하기 위해 프레임을 단위로 쪼갠다
 
@@ -10,10 +56,10 @@ root.title("GUI")
 file_frame = Frame(root, padx=5, pady=5)
 file_frame.pack(fill="x")
 
-btn_add_file = Button(file_frame, padx=5, pady=5, width=10, text="파일추가")
+btn_add_file = Button(file_frame, padx=5, pady=5, width=10, text="파일추가", command=add_file)
 btn_add_file.pack(side="left")
 
-btn_del_file = Button(file_frame, padx=5, pady=5, width=10, text="선택삭제")
+btn_del_file = Button(file_frame, padx=5, pady=5, width=10, text="선택삭제", command=del_file)
 btn_del_file.pack(side="right")
 
 # 리스트 프레임
@@ -34,7 +80,7 @@ path_frame.pack(fill="x", padx=10, pady=5, ipady=5)
 txt_dest_path = Entry(path_frame)
 txt_dest_path.pack(side="left", fill="x", expand=True, ipady=4) # ipad는 안쪽 패딩
 
-btn_dest_path = Button(path_frame, text="찾아보기",  padx=5, pady=5, width=10)
+btn_dest_path = Button(path_frame, text="찾아보기",  padx=5, pady=5, width=10, command=browse_dest_path)
 btn_dest_path.pack(side="right")
 
 
@@ -81,10 +127,10 @@ progress_bar.pack(fill="x", expand=True)
 frame_run = Frame(root, padx=5, pady=5)
 frame_run.pack(fill="x")
 
-btn_close = Button(frame_run, padx=5, pady=5, width=10, text="닫기")
+btn_close = Button(frame_run, padx=5, pady=5, width=10, text="닫기", command=root.quit)
 btn_close.pack(side="right", padx=5, pady=5)
 
-btn_start = Button(frame_run, padx=5, pady=5, width=10, text="시작")
+btn_start = Button(frame_run, padx=5, pady=5, width=10, text="시작", command=start)
 btn_start.pack(side="right", padx=5, pady=5)
 
 
