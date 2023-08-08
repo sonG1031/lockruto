@@ -9,7 +9,7 @@ from model.yolox.yolox_onnx import YoloxONNX
 
 def main():
     # 변수 설정 #################################################################
-    cap_device = 1
+    cap_device = 0
     cap_width = 960
     cap_height = 540
     fps = 60

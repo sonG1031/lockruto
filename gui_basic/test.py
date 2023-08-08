@@ -16,7 +16,7 @@ frame1.pack()
 label1 = Label(frame1, bg="green")
 label1.pack()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 while cap.isOpened():
     ret, img = cap.read()
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
