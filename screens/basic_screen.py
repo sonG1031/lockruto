@@ -2,8 +2,6 @@ from tkinter import *
 
 
 from screens.start_screen import StartScreen
-from screens.files_screen import FilesScreen
-
 class Screen:
     def __init__(self, root):
 
@@ -16,6 +14,7 @@ class Screen:
         self.frames = {
             "start_screen": Frame(root, relief="solid", bg=self.colors["background"]),
             "files_screen": Frame(root, relief="solid", bg=self.colors["background"]),
+            "lock_screen": Frame(root, relief="solid", bg=self.colors["background"]),
         }
 
         self.root = root
@@ -27,10 +26,6 @@ class Screen:
     def show_screen(self):
         st_screen = StartScreen(self.root, self.frames, self.colors)
         st_screen.create_frame()
-        # self.frames["start_screen"].pack(pady=230)
-        #
-        # f_screen = FilesScreen(self.root, self.frames, self.colors)
-        # f_screen.create_frame()
 
         self.root.mainloop()
 
