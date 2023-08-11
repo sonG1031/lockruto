@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 
 class StartScreen:
 
@@ -10,14 +11,12 @@ class StartScreen:
 
     def create_frame(self):
 
-        self.frames["start_screen"].pack(pady=(140,0))
-
-        title = Label(
-            self.frames["start_screen"],
-            text="Lockruto",
-            bg=self.colors["background"],
-            font=("Arial", 100, "bold"),
-        )
+        self.frames["start_screen"].pack(pady=(50,0))
+        title_img = Image.open("./images/start_screen_title.png")
+        title_img = title_img.resize((500,187), Image.ANTIALIAS)
+        title_photo = ImageTk.PhotoImage(title_img)
+        title = Label(self.frames['start_screen'], image=title_photo, bg=self.colors["background"],)
+        title.image = title_photo
         title.pack(side="top")
 
         btns_frame = Frame(
@@ -26,24 +25,38 @@ class StartScreen:
         )
         btns_frame.pack(pady=(0,10))
 
+        files_btn_img = Image.open("./images/files_btn.png")
+        files_btn_img = files_btn_img.resize((100,38), Image.ANTIALIAS)
+        files_btn_photo = ImageTk.PhotoImage(files_btn_img)
+
         files_btn = Button(
             btns_frame,
-            text="FILES",
-            width=10,
-            height=2,
+            # text="FILES",
+            image=files_btn_photo,
+            width=100,
+            height=43,
             fg=self.colors["button"],
+            bg=self.colors["background"],
             command=self.files_cmd
         )
+        files_btn.image = files_btn_photo
         files_btn.pack(side="left", padx=10)
+
+        lock_btn_img = Image.open("./images/lock_btn.png")
+        lock_btn_img = lock_btn_img.resize((100, 43), Image.ANTIALIAS)
+        lock_btn_photo = ImageTk.PhotoImage(lock_btn_img)
 
         lock_btn = Button(
             btns_frame,
-            text="LOCK",
-            width=10,
-            height=2,
+            # text="LOCK",
+            image=lock_btn_photo,
+            width=100,
+            height=43,
             fg=self.colors["button"],
+            bg=self.colors["background"],
             command=self.lock_cmd
         )
+        lock_btn.image = lock_btn_photo
         lock_btn.pack(side="right", padx=10)
 
         bg_photo = PhotoImage(file="./images/bg.png")

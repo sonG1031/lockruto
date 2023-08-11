@@ -1,5 +1,6 @@
 from tkinter import *
-
+from PIL import Image, ImageTk
+from tkinter import filedialog
 
 class LockScreen:
     def __init__(self, root, frames, colors):
@@ -10,12 +11,11 @@ class LockScreen:
     def create_frame(self):
         self.frames["lock_screen"].pack(pady=20)
 
-        title = Label(
-            self.frames["lock_screen"],
-            text="Lock With Jutsu",
-            bg=self.colors["background"],
-            font=("Arial", 50, "bold"),
-        )
+        title_img = Image.open("./images/lock_screen_title.png")
+        title_img = title_img.resize((500, 127), Image.ANTIALIAS)
+        title_photo = ImageTk.PhotoImage(title_img)
+        title = Label(self.frames["lock_screen"], image=title_photo, bg=self.colors["background"], )
+        title.image = title_photo
         title.pack(side="top")
 
         list_frame = Frame(
@@ -29,51 +29,87 @@ class LockScreen:
         scrollbar = Scrollbar(list_frame)
         scrollbar.pack(side="right", fill="y")
 
-        list_file = Listbox(
+        self.list_file = Listbox(
             list_frame,
             selectmode="extended",
             height=15,
             width=200,
             bg=self.colors["box"],
             yscrollcommand=scrollbar.set)
-        list_file.pack(side="left", fill="both", expand=True)
-        scrollbar.config(command=list_file.yview)
+        self.list_file.pack(side="left", fill="both", expand=True)
+        scrollbar.config(command=self.list_file.yview)
 
         btns_frame = Frame(
             self.frames["lock_screen"],
-            padx=100,
+            # padx=100,
             pady=20,
             bg=self.colors["background"],
         )
         btns_frame.pack()
 
+        select_btn_img = Image.open("./images/select_btn.png")
+        select_btn_img = select_btn_img.resize((90, 30), Image.ANTIALIAS)
+        select_btn_photo = ImageTk.PhotoImage(select_btn_img)
+
         select_btn = Button(
             btns_frame,
-            text="SELECT",
-            width=10,
-            height=2,
+            # text="SELECT",
+            image=select_btn_photo,
+            width=120,
+            height=35,
             fg=self.colors["button"],
+            command=self.select_cmd
         )
+        select_btn.image = select_btn_photo
         select_btn.pack(side="left", padx=10)
+
+        delete_btn_img = Image.open("./images/delete_btn.png")
+        delete_btn_img = delete_btn_img.resize((90, 30), Image.ANTIALIAS)
+        delete_btn_photo = ImageTk.PhotoImage(delete_btn_img)
+
+        delete_btn = Button(
+            btns_frame,
+            # text="SELECT",
+            image=delete_btn_photo,
+            width=120,
+            height=35,
+            fg=self.colors["button"],
+            command=self.delete_cmd
+        )
+        delete_btn.image = delete_btn_photo
+        delete_btn.pack(side="left", padx=10)
+
+
+        jutsu_btn_img = Image.open("./images/jutsu_btn.png")
+        jutsu_btn_img = jutsu_btn_img.resize((90, 33), Image.ANTIALIAS)
+        jutsu_btn_photo = ImageTk.PhotoImage(jutsu_btn_img)
 
         jutsu_btn = Button(
             btns_frame,
-            text="JUTSU",
-            width=10,
-            height=2,
+            # text="JUTSU",
+            image=jutsu_btn_photo,
+            width=120,
+            height=35,
             fg=self.colors["button"],
             # command=self.unlock_cmd
         )
+        jutsu_btn.image = jutsu_btn_photo
         jutsu_btn.pack(side="left", padx=10)
+
+        home_btn_img = Image.open("./images/home_btn.png")
+        home_btn_img = home_btn_img.resize((70, 32), Image.ANTIALIAS)
+        home_btn_photo = ImageTk.PhotoImage(home_btn_img)
 
         home_btn = Button(
             btns_frame,
-            text="HOME",
-            width=10,
-            height=2,
+            # text="HOME",
+            image=home_btn_photo,
+            width=120,
+            height=35,
             fg=self.colors["button"],
             command=self.home_cmd
         )
+        home_btn.image = home_btn_photo
         home_btn.pack(side="left", padx=10)
 
         bg_photo = PhotoImage(file="./images/bg2.png")
@@ -83,6 +119,20 @@ class LockScreen:
         bg.pack(side="bottom")
 
         print("lock_screen created")
+
+    def select_cmd(self):
+        files = filedialog.askopenfilenames(
+            title="봉인할 파일을 선택하라니깐!",
+            filetypes=(("PNG", "*.png"), ("모든 파일", "*.*")),
+            initialdir="/Users/pulledsub"
+        )
+        for file in files:  # 사용자가 선택한 파일
+            self.list_file.insert(END, file)
+
+    def delete_cmd(self):
+        # 뒤집는 이유: 끝 인덱스부터 지워야 지우고 난 후 다음에 지울 인덱스에 영향이 없음
+        for idx in reversed(self.list_file.curselection()):
+            self.list_file.delete(idx)
 
     def home_cmd(self):
         from screens.start_screen import StartScreen

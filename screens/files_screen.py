@@ -1,17 +1,19 @@
 from tkinter import *
+from PIL import Image, ImageTk
+
 class FilesScreen:
     def __init__(self, root, frames, colors):
         self.root = root
         self.frames = frames
         self.colors = colors
     def create_frame(self):
-        self.frames['files_screen'].pack(pady=20)
-        title = Label(
-            self.frames['files_screen'],
-            text="Locked Files",
-            bg=self.colors["background"],
-            font=("Arial", 50, "bold"),
-        )
+        self.frames['files_screen'].pack(pady=(20,0))
+
+        title_img = Image.open("./images/files_screen_title.png")
+        title_img = title_img.resize((500, 146), Image.ANTIALIAS)
+        title_photo = ImageTk.PhotoImage(title_img)
+        title = Label(self.frames['files_screen'], image=title_photo, bg=self.colors["background"], )
+        title.image = title_photo
         title.pack(side="top")
 
         list_frame = Frame(
@@ -43,33 +45,51 @@ class FilesScreen:
         )
         btns_frame.pack()
 
+        open_btn_img = Image.open("./images/open_btn.png")
+        open_btn_img = open_btn_img.resize((70, 32), Image.ANTIALIAS)
+        open_btn_photo = ImageTk.PhotoImage(open_btn_img)
+
         open_btn = Button(
             btns_frame,
-            text="OPEN",
-            width=10,
-            height=2,
+            # text="OPEN",
+            image=open_btn_photo,
+            width=120,
+            height=35,
             fg = self.colors["button"],
         )
+        open_btn.image = open_btn_photo
         open_btn.pack(side="left", padx=10)
+
+        unlock_btn_img = Image.open("./images/unlock_btn.png")
+        unlock_btn_img = unlock_btn_img.resize((90, 30), Image.ANTIALIAS)
+        unlock_btn_photo = ImageTk.PhotoImage(unlock_btn_img)
 
         unlock_btn = Button(
             btns_frame,
-            text="UNLOCK",
-            width=10,
-            height=2,
+            # text="UNLOCK",
+            image=unlock_btn_photo,
+            width=120,
+            height=35,
             fg=self.colors["button"],
             command=self.unlock_cmd
         )
+        unlock_btn.image = unlock_btn_photo
         unlock_btn.pack(side="left", padx=10)
+
+        home_btn_img = Image.open("./images/home_btn.png")
+        home_btn_img = home_btn_img.resize((70, 32), Image.ANTIALIAS)
+        home_btn_photo = ImageTk.PhotoImage(home_btn_img)
 
         home_btn = Button(
             btns_frame,
-            text="HOME",
-            width=10,
-            height=2,
+            # text="HOME",
+            image=home_btn_photo,
+            width=120,
+            height=35,
             fg=self.colors["button"],
             command=self.home_cmd
         )
+        home_btn.image = home_btn_photo
         home_btn.pack(side="left", padx=10)
 
         bg_photo = PhotoImage(file="./images/bg2.png")
