@@ -1,5 +1,8 @@
 from tkinter import *
 from PIL import Image, ImageTk
+from utils import playSound
+from tkmacosx import Button
+
 
 class FilesScreen:
     def __init__(self, root, frames, colors):
@@ -56,6 +59,10 @@ class FilesScreen:
             width=120,
             height=35,
             fg = self.colors["button"],
+            activebackground=self.colors["activeBtn"],
+            bg=self.colors["background"],
+
+            borderless=1,
         )
         open_btn.image = open_btn_photo
         open_btn.pack(side="left", padx=10)
@@ -71,7 +78,11 @@ class FilesScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
-            command=self.unlock_cmd
+            command=self.unlock_cmd,
+            activebackground=self.colors["activeBtn"],
+            bg=self.colors["background"],
+
+            borderless=1,
         )
         unlock_btn.image = unlock_btn_photo
         unlock_btn.pack(side="left", padx=10)
@@ -87,7 +98,10 @@ class FilesScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
-            command=self.home_cmd
+            bg=self.colors["background"],
+            command=self.home_cmd,
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
         )
         home_btn.image = home_btn_photo
         home_btn.pack(side="left", padx=10)
@@ -102,6 +116,8 @@ class FilesScreen:
 
 
     def home_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         from screens.start_screen import StartScreen
         self.frames['files_screen'].destroy()
 

@@ -1,5 +1,8 @@
 from tkinter import *
+from tkmacosx import Button
+
 from PIL import Image, ImageTk
+from utils import playSound
 
 class StartScreen:
 
@@ -37,6 +40,8 @@ class StartScreen:
             height=43,
             fg=self.colors["button"],
             bg=self.colors["background"],
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
             command=self.files_cmd
         )
         files_btn.image = files_btn_photo
@@ -54,6 +59,8 @@ class StartScreen:
             height=43,
             fg=self.colors["button"],
             bg=self.colors["background"],
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
             command=self.lock_cmd
         )
         lock_btn.image = lock_btn_photo
@@ -70,6 +77,8 @@ class StartScreen:
 
 
     def files_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         from screens.files_screen import FilesScreen
         self.frames['start_screen'].destroy() # 화면에서 삭제
         self.frames['start_screen'] = Frame(self.root, relief="solid", bg=self.colors["background"])
@@ -77,6 +86,8 @@ class StartScreen:
         FilesScreen(self.root, self.frames, self.colors).create_frame() # 파일 목록 화면으로 이동
 
     def lock_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         from screens.lock_screen import LockScreen
         self.frames['start_screen'].destroy()  # 화면에서 삭제
         self.frames['start_screen'] = Frame(self.root, relief="solid", bg=self.colors["background"])

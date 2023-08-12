@@ -9,6 +9,7 @@ class Screen:
             "background": "#000000",
             "button": "#332F2E",
             "box": "#1F1C1C",
+            "activeBtn": "#D941A4"
         }
 
         self.frames = {

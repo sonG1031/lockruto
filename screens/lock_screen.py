@@ -1,6 +1,9 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog
+from utils import playSound
+from tkmacosx import Button
+
 
 class LockScreen:
     def __init__(self, root, frames, colors):
@@ -58,7 +61,11 @@ class LockScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
-            command=self.select_cmd
+            command=self.select_cmd,
+            bg=self.colors["background"],
+
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
         )
         select_btn.image = select_btn_photo
         select_btn.pack(side="left", padx=10)
@@ -74,7 +81,11 @@ class LockScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
-            command=self.delete_cmd
+            command=self.delete_cmd,
+            bg=self.colors["background"],
+
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
         )
         delete_btn.image = delete_btn_photo
         delete_btn.pack(side="left", padx=10)
@@ -91,6 +102,10 @@ class LockScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
+            bg=self.colors["background"],
+
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
             # command=self.unlock_cmd
         )
         jutsu_btn.image = jutsu_btn_photo
@@ -107,7 +122,11 @@ class LockScreen:
             width=120,
             height=35,
             fg=self.colors["button"],
-            command=self.home_cmd
+            bg=self.colors["background"],
+
+            command=self.home_cmd,
+            activebackground=self.colors["activeBtn"],
+            borderless=1,
         )
         home_btn.image = home_btn_photo
         home_btn.pack(side="left", padx=10)
@@ -121,6 +140,8 @@ class LockScreen:
         print("lock_screen created")
 
     def select_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         files = filedialog.askopenfilenames(
             title="봉인할 파일을 선택하라니깐!",
             filetypes=(("PNG", "*.png"), ("모든 파일", "*.*")),
@@ -130,11 +151,15 @@ class LockScreen:
             self.list_file.insert(END, file)
 
     def delete_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         # 뒤집는 이유: 끝 인덱스부터 지워야 지우고 난 후 다음에 지울 인덱스에 영향이 없음
         for idx in reversed(self.list_file.curselection()):
             self.list_file.delete(idx)
 
     def home_cmd(self):
+        playSound("./utils/sounds/HEUA.mp3")
+
         from screens.start_screen import StartScreen
         # 잠금화면 삭제 후 빈화면 할당
         self.frames['lock_screen'].destroy()
