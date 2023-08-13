@@ -14,6 +14,7 @@ class Screen:
             "start_screen": Frame(root, relief="solid", bg=self.colors["background"]),
             "files_screen": Frame(root, relief="solid", bg=self.colors["background"]),
             "lock_screen": Frame(root, relief="solid", bg=self.colors["background"]),
+            "jutsu_screen": Frame(root, relief="solid", bg=self.colors["background"]),
         }
 
         self.root = root

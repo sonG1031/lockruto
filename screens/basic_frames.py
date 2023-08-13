@@ -49,6 +49,8 @@ class ScreenFrame:
         self.list_file.pack(side="left", fill="both", expand=True)
         scrollbar.config(command=self.list_file.yview)
 
+        self.list_file.focus_set()
+
     def create_btns(self, btns_info):
         btns_frame = Frame(
             self.frame[self.frame_name],
@@ -94,8 +96,8 @@ class ScreenFrame:
         bg.pack(side="bottom")
 
 
-    def move_window(self, move_frame_name):
-        from screens.frames import StartFrame, FilesFrame, LockFrame
+    def move_window(self, move_frame_name, lst_files=None):
+        from screens.frames import StartFrame, FilesFrame, LockFrame, JutsuFrame
         playSound("./utils/sounds/HEUA.mp3")
 
         self.frame[self.frame_name].destroy()
@@ -107,4 +109,6 @@ class ScreenFrame:
         elif move_frame_name == "files_screen":
             FilesFrame(self.root, self.frame, "files_screen", self.colors).create_frame()
         elif move_frame_name == "lock_screen":
-            LockFrame(self.root, self.frame, "lock_screen", self.colors).create_frame()
+            LockFrame(self.root, self.frame, "lock_screen", self.colors, lst_files).create_frame()
+        elif move_frame_name == "jutsu_screen":
+            JutsuFrame(self.root, self.frame, "jutsu_screen", self.colors, lst_files).create_frame()
