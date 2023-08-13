@@ -1,7 +1,5 @@
 from tkinter import *
 
-
-from screens.start_screen import StartScreen
 class Screen:
     def __init__(self, root):
 
@@ -25,7 +23,9 @@ class Screen:
         self.root.config(bg=self.colors['background'])
 
     def show_screen(self):
-        st_screen = StartScreen(self.root, self.frames, self.colors)
+        from screens.frames import StartFrame
+
+        st_screen = StartFrame(self.root, self.frames, "start_screen", self.colors)
         st_screen.create_frame()
 
         self.root.mainloop()
