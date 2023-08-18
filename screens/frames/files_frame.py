@@ -1,5 +1,6 @@
 from tkinter import *
 from screens import ScreenFrame
+import os
 
 class FilesFrame(ScreenFrame):
     def create_frame(self):
@@ -8,6 +9,14 @@ class FilesFrame(ScreenFrame):
         self.create_title("./images/files_screen_title.png", (500, 146))
 
         self.create_list()
+        home_path = os.path.expanduser('~')
+        file_path = f"{home_path}/.Lockruto"
+        file_list = os.listdir(file_path)
+        if len(file_list):
+            for file in file_list:
+                if file == '.DS_Store':
+                    continue
+                self.list_file.insert(END, file)
 
         btns_info = [
             {
@@ -43,7 +52,13 @@ class FilesFrame(ScreenFrame):
         print("files_frame created")
 
     def open_cmd(self):
-        pass
+        lst_files = []
+        for idx in self.list_file.curselection():
+            lst_files.append(self.list_file.get(idx))
+        self.move_window("open_screen", lst_files)
 
     def unlock_cmd(self):
-        pass
+        lst_files = []
+        for idx in self.list_file.curselection():
+            lst_files.append(self.list_file.get(idx))
+        self.move_window("unlock_screen", lst_files)

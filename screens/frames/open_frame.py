@@ -14,10 +14,10 @@ from model.yolox.yolox_onnx import YoloxONNX
 from utils import playSound
 
 from Crypto.Protocol.KDF import PBKDF2
-from Crypto.Util.Padding import pad
+from Crypto.Util.Padding import unpad
 from Crypto.Cipher import AES
 
-class JutsuFrame(ScreenFrame):
+class OpenFrame(ScreenFrame):
 
     def __init__(self, root, frames, frame_name, colors, lst_files=None):
         super().__init__(root, frames, frame_name, colors)
@@ -37,8 +37,7 @@ class JutsuFrame(ScreenFrame):
     def create_frame(self):
         self.pack_frame((20, 0))
 
-        self.create_title("./images/lock_screen_title.png", (500, 127))
-
+        self.create_title("./images/files_screen_title.png", (500, 146))
 
         cam_label = Label(self.frame[self.frame_name], bg=self.colors['background'])
         cam_label.pack()
@@ -61,11 +60,11 @@ class JutsuFrame(ScreenFrame):
                 "btn_side": "left"
             },
             {
-                "btn_path": "./images/encrypt_btn.png",
+                "btn_path": "./images/open_btn.png",
                 "btn_size": (90, 32),
                 "btn_w": 120,
                 "btn_h": 35,
-                "btn_cmd": self.encrypt_cmd,
+                "btn_cmd": self.open_cmd,
                 "btn_side": "left"
             },
             {
@@ -99,7 +98,7 @@ class JutsuFrame(ScreenFrame):
 
         self.create_bg("./images/bg2.png")
 
-        print("lock_frame created")
+        print("open_frame created")
 
         ############################################ 기초 변수 설정
         model_path = "model/yolox/yolox_nano.onnx"
@@ -222,7 +221,7 @@ class JutsuFrame(ScreenFrame):
         self.pw = []
         self.frame[self.frame_name].update()
 
-    def encrypt_cmd(self):
+    def open_cmd(self):
         playSound("./utils/sounds/HEUA.mp3")
         if len(self.pw) < 6:
             msgbox.showwarning("WAIT!", "You have to finish your Jutsu!!")
@@ -236,22 +235,25 @@ class JutsuFrame(ScreenFrame):
         home_path = os.path.expanduser('~')
 
         try:
-            # 암호화 후 락루토 폴더로 이동
             for lst_file in self.lst_files:
-                    file_name = lst_file.split('/')[-1]
-                    file_path = f"{home_path}/.Lockruto/{file_name}.lockruto"
-                    with open(lst_file, 'rb') as f:
-                        cipher = AES.new(PW, AES.MODE_CBC)
-                        cipher_file = cipher.encrypt(pad(f.read(), BS))
-                    with open(lst_file, 'wb') as f:
-                        f.write(cipher.iv)
-                        f.write(cipher_file)
-                    os.rename(lst_file, file_path)
-                    # os.chmod(file_path, 0000)
+                    file_name = lst_file.split('.lockruto')[0]
+                    file_path = f"{home_path}/.Lockruto/{lst_file}"
+
+                    with open(file_path, 'rb') as f:
+                        iv = f.read(16)  # 16bit
+                        decrypt_file = f.read()
+                    cipher = AES.new(PW, AES.MODE_CBC, iv=iv)
+                    og_file = unpad(cipher.decrypt(decrypt_file), BS)
+
+                    decrypt_path = f"{home_path}/Downloads/{file_name}"
+                    print(file_name)
+                    with open(decrypt_path, 'wb+') as f:
+                        f.write(og_file)
+
         except Exception as e:
             msgbox.showerror("Error", str(e))
             return
 
-        msgbox.showinfo("Encrypted", f"{len(self.lst_files)} files are encrypted")
+        msgbox.showinfo("Opened", f"{len(self.lst_files)} files are opened")
 
         self.home_cmd()

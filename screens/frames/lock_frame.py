@@ -6,6 +6,7 @@ from utils import playSound
 from tkinter import filedialog
 import tkinter.messagebox as msgbox
 
+import os
 
 class LockFrame(ScreenFrame):
 
@@ -70,8 +71,8 @@ class LockFrame(ScreenFrame):
 
         files = filedialog.askopenfilenames(
             title="봉인할 파일을 선택하라니깐!",
-            filetypes=(("ALL", "*.*"), ("TXT", "*.txt"),),
-            initialdir="/Users/pulledsub"
+            filetypes=(("TXT", "*.txt"), ("ALL", "*.*"),),
+            initialdir=os.path.expanduser('~')
         )
         for file in files:  # 사용자가 선택한 파일
             self.list_file.insert(END, file)

@@ -25,7 +25,7 @@ def btncmd():
     # 선택된 항목 확인
     print("selected items : ", listbox.curselection()) # 선택된 항목의 인덱스 값을 반환함
     for idx in listbox.curselection():
-        print(listbox.get(idx))
+        print(listbox.get( ))
 
 btn = Button(root, text="click", command=btncmd)
 btn.pack()

@@ -97,7 +97,7 @@ class ScreenFrame:
 
 
     def move_window(self, move_frame_name, lst_files=None):
-        from screens.frames import StartFrame, FilesFrame, LockFrame, JutsuFrame
+        from screens.frames import StartFrame, FilesFrame, LockFrame, JutsuFrame, OpenFrame, UnlockFrame
         playSound("./utils/sounds/HEUA.mp3")
 
         self.frame[self.frame_name].destroy()
@@ -112,3 +112,7 @@ class ScreenFrame:
             LockFrame(self.root, self.frame, "lock_screen", self.colors, lst_files).create_frame()
         elif move_frame_name == "jutsu_screen":
             JutsuFrame(self.root, self.frame, "jutsu_screen", self.colors, lst_files).create_frame()
+        elif move_frame_name == "open_screen":
+            OpenFrame(self.root, self.frame, "open_screen", self.colors, lst_files).create_frame()
+        elif move_frame_name == "unlock_screen":
+            UnlockFrame(self.root, self.frame, "unlock_screen", self.colors, lst_files).create_frame()
