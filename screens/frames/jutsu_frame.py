@@ -223,8 +223,8 @@ class JutsuFrame(ScreenFrame):
         self.frame[self.frame_name].update()
 
     def encrypt_cmd(self):
-        playSound("./utils/sounds/HEUA.mp3")
         if len(self.pw) < 6:
+            playSound("./utils/sounds/HEUA.mp3")
             msgbox.showwarning("WAIT!", "You have to finish your Jutsu!!")
             return
         print(self.pw)
@@ -252,6 +252,7 @@ class JutsuFrame(ScreenFrame):
             msgbox.showerror("Error", str(e))
             return
 
+        playSound("./utils/sounds/jutsuFinished.mp3")
         msgbox.showinfo("Encrypted", f"{len(self.lst_files)} files are encrypted")
 
         self.home_cmd()

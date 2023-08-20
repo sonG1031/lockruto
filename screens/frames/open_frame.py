@@ -222,8 +222,8 @@ class OpenFrame(ScreenFrame):
         self.frame[self.frame_name].update()
 
     def open_cmd(self):
-        playSound("./utils/sounds/HEUA.mp3")
         if len(self.pw) < 6:
+            playSound("./utils/sounds/HEUA.mp3")
             msgbox.showwarning("WAIT!", "You have to finish your Jutsu!!")
             return
         print(self.pw)
@@ -254,6 +254,7 @@ class OpenFrame(ScreenFrame):
             msgbox.showerror("Error", str(e))
             return
 
+        playSound("./utils/sounds/jutsuFinished.mp3")
         msgbox.showinfo("Opened", f"{len(self.lst_files)} files are opened")
 
         self.home_cmd()
