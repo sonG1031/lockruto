@@ -1,6 +1,8 @@
 from tkinter import *
 from screens import ScreenFrame
 import os
+import tkinter.messagebox as msgbox
+
 
 class FilesFrame(ScreenFrame):
     def create_frame(self):
@@ -55,10 +57,16 @@ class FilesFrame(ScreenFrame):
         lst_files = []
         for idx in self.list_file.curselection():
             lst_files.append(self.list_file.get(idx))
+        if len(lst_files) == 0:
+            msgbox.showwarning("WAIT!", "Please select files first..")
+            return
         self.move_window("open_screen", lst_files)
 
     def unlock_cmd(self):
         lst_files = []
         for idx in self.list_file.curselection():
             lst_files.append(self.list_file.get(idx))
+        if len(lst_files) == 0:
+            msgbox.showwarning("WAIT!", "Please select files first..")
+            return
         self.move_window("unlock_screen", lst_files)

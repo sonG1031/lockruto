@@ -204,7 +204,7 @@ class OpenFrame(ScreenFrame):
     def cancel_cmd(self):
         self.cap.release()
         cv2.destroyAllWindows()
-        self.move_window("lock_screen", self.lst_files)
+        self.move_window("files_screen", self.lst_files)
 
     def home_cmd(self):
         self.cap.release()
