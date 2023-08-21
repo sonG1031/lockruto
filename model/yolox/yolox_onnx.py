@@ -2,15 +2,15 @@ import copy
 
 import cv2
 import numpy as np
-import onnxruntime
+import onnxruntime # onnx 파일을 사용하기 위해
 
 
 class YoloxONNX(object):
     def __init__(
         self,
-        model_path='yolox_nano.onnx',
-        input_shape=(416, 416),
-        class_score_th=0.3,
+        model_path='yolox_nano.onnx', # 변환된 onnx 파일
+        input_shape=(416, 416), # 학습된 모델에 넣어야할 이미지 크기
+        class_score_th=0.3, # 추론한 클래스의 정확도 임계값
         nms_th=0.45,
         nms_score_th=0.1,
         with_p6=False,
@@ -36,11 +36,10 @@ class YoloxONNX(object):
         self.output_name = self.onnx_session.get_outputs()[0].name
 
     def inference(self, image):
-        # print(f"image shape: {np.shape(image)}")
         temp_image = copy.deepcopy(image)
         image_height, image_width = image.shape[0], image.shape[1]
 
-        # 사진 전처리
+        # 사진 전처리, input_shape에 맞게 사진 크기를 조정, 패딩 추가
         preprocess_image, ratio = self._preprocess(temp_image, self.input_shape)
 
         # 예측, prediction!
@@ -63,7 +62,7 @@ class YoloxONNX(object):
 
         return bboxes, scores, class_ids
 
-    def _preprocess(self, image, input_size, swap=(2, 0, 1)):
+    def _preprocess(self, image, input_size, swap=(2, 0, 1)): # axis 0, 1, 2
         if len(image.shape) == 3:
             padded_image = np.ones(
                 (input_size[0], input_size[1], 3), dtype=np.uint8) * 114
@@ -81,9 +80,9 @@ class YoloxONNX(object):
 
         padded_image[:int(image.shape[0] * ratio), :int(image.shape[1] *
                                                         ratio)] = resized_image
-        padded_image = padded_image.transpose(swap)
-        padded_image = np.ascontiguousarray(padded_image, dtype=np.float32)
-
+        padded_image = padded_image.transpose(swap) # 축의 차원을 바꿈
+        padded_image = np.ascontiguousarray(padded_image, dtype=np.float32) # 넘파이 연속배열로 변환
+        # 메모리에 연속적으로 저장되지 않는 배열을 연속적으로 저장되는 배열로 변환하기 때문에 더 빠르게 데이터를 불러올 수 있음
         return padded_image, ratio
 
     def _postprocess(
